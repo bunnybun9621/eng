@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WORD REMIX</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        Arial,
+        "Noto Sans KR",
+        sans-serif;
+
+    background: #f7f5ff;
+    color: #292735;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+.container {
+    width: min(1000px, 92%);
+    margin: auto;
+    padding: 30px 0 70px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.logo {
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.logo span {
+    color: #8b75ff;
+}
+
+.subtitle {
+    margin-top: 7px;
+    color: #918b9d;
+}
+
+
+/* =========================
+   NAV
+========================= */
+
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.nav button {
+    padding: 12px 18px;
+    border-radius: 15px;
+    background: white;
+    color: #777387;
+    box-shadow: 0 5px 18px rgba(80,70,120,.06);
+}
+
+.nav button.active {
+    background: #8b75ff;
+    color: white;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 35px rgba(70,60,110,.08);
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(70,60,110,.06);
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.stat-title {
+    margin-top: 5px;
+    color: #918b9d;
+    font-size: 13px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    color: #817b91;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #e6e2ef;
+    border-radius: 13px;
+    background: #faf9fd;
+    outline: none;
+}
+
+input:focus {
+    border-color: #8b75ff;
+    background: white;
+}
+
+.add-btn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 15px;
+    border-radius: 14px;
+    background: #8b75ff;
+    color: white;
+    font-weight: bold;
+}
+
+.add-btn:hover {
+    background: #765de8;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    display: none;
+    text-align: center;
+    margin-top: 15px;
+    color: #8b75ff;
+    font-weight: bold;
+}
+
+.loading.show {
+    display: block;
+}
+
+
+/* =========================
+   API RESULT
+========================= */
+
+.api-result {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 18px;
+    background: #f7f5ff;
+}
+
+.api-result.show {
+    display: block;
+}
+
+.result-word {
+    font-size: 27px;
+    font-weight: 900;
+}
+
+.phonetic {
+    margin-top: 5px;
+    color: #8b75ff;
+}
+
+.result-section {
+    margin-top: 17px;
+}
+
+.result-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #918b9d;
+    margin-bottom: 6px;
+}
+
+.result-content {
+    line-height: 1.6;
+}
+
+
+/* =========================
+   WORD LIST
+========================= */
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.search {
+    max-width: 260px;
+}
+
+.word-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.word-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+
+    padding: 17px;
+
+    border: 1px solid #eeeaf7;
+    border-radius: 18px;
+}
+
+.word-main {
+    min-width: 0;
+}
+
+.word {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.meaning {
+    margin-top: 4px;
+    color: #777387;
+}
+
+.extra {
+    margin-top: 7px;
+    font-size: 13px;
+    color: #aaa5b5;
+}
+
+.example {
+    margin-top: 7px;
+    color: #9992a5;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.word-actions {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.star-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #fff5bd;
+}
+
+.star-btn.off {
+    background: #f4f2f8;
+    filter: grayscale(1);
+}
+
+.delete-btn {
+    padding: 0 13px;
+    border-radius: 12px;
+    background: #fff0f0;
+    color: #e66c6c;
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-score {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #817b91;
+}
+
+.quiz-card {
+    max-width: 650px;
+    margin: auto;
+    text-align: center;
+}
+
+.quiz-type {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #eeeaff;
+    color: #765de8;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.question {
+    margin: 22px 0 30px;
+    font-size: 35px;
+    font-weight: 900;
+    word-break: break-word;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.answer {
+    padding: 18px;
+    border-radius: 15px;
+    background: #f6f4fc;
+    color: #454052;
+    font-weight: bold;
+}
+
+.answer:hover {
+    background: #ebe7ff;
+}
+
+.answer.correct {
+    background: #dff7e8;
+    color: #24824c;
+}
+
+.answer.wrong {
+    background: #ffe2e2;
+    color: #c34d4d;
+}
+
+.quiz-result {
+    min-height: 25px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.next-btn {
+    display: none;
+    margin-top: 18px;
+    padding: 13px 25px;
+    border-radius: 13px;
+    background: #292735;
+    color: white;
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty {
+    padding: 50px 20px;
+    text-align: center;
+    color: #aaa5b5;
+}
+
+.empty-icon {
+    margin-bottom: 10px;
+    font-size: 40px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+    .logo {
+        font-size: 30px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    .word-item {
+        align-items: flex-start;
+    }
+
+    .word-actions {
+        flex-direction: column;
+    }
+
+    .stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stat {
+        padding: 15px 5px;
+    }
+
+    .stat-number {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+<header>
+
+    <div class="logo">
+        WORD <span>REMIX</span>
+    </div>
+
+    <div class="subtitle">
+        나만의 영단어 암기장
+    </div>
+
+</header>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="nav">
+
+    <button
+        class="active"
+        onclick="showPage('home', this)"
+    >
+        단어 추가
+    </button>
+
+    <button
+        onclick="showPage('words', this)"
+    >
+        단어장
+    </button>
+
+    <button
+        onclick="showPage('quiz', this)"
+    >
+        랜덤 퀴즈
+    </button>
+
+    <button
+        onclick="showPage('unknown', this)"
+    >
+        ⭐ 모르는 단어
+    </button>
+
+</nav>
+
+
+<!-- =========================
+     HOME
+========================= -->
+
+<section id="home" class="page active">
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="totalCount"
+            >
+                0
+            </div>
+
+            <div class="stat-title">
+                전체 단어
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="unknownCount"
+            >
+                0
+            </div>
+
+            <div class="stat-title">
+                모르는 단어
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="knownCount"
+            >
+                0
+            </div>
+
+            <div class="stat-title">
+                외운 단어
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card">
+
+        <h2>
+            새 단어 추가
+        </h2>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group full">
+
+                <label>
+                    영단어
+                </label>
+
+                <input
+                    id="wordInput"
+                    type="text"
+                    placeholder="예: abandon"
+                    autocomplete="off"
+                    onkeydown="handleEnter(event)"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    뜻
+                </label>
+
+                <input
+                    id="meaningInput"
+                    type="text"
+                    placeholder="자동으로 검색됩니다"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    동의어
+                </label>
+
+                <input
+                    id="synonymInput"
+                    type="text"
+                    placeholder="자동으로 검색됩니다"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    반의어
+                </label>
+
+                <input
+                    id="antonymInput"
+                    type="text"
+                    placeholder="자동으로 검색됩니다"
+                    readonly
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="add-btn"
+            onclick="searchAndAddWord()"
+        >
+            🔍 단어 검색 & 추가
+        </button>
+
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            🔎 단어 정보를 가져오는 중...
+        </div>
+
+
+        <div
+            id="apiResult"
+            class="api-result"
+        >
+
+            <div
+                id="resultWord"
+                class="result-word"
+            ></div>
+
+            <div
+                id="resultPhonetic"
+                class="phonetic"
+            ></div>
+
+
+            <div class="result-section">
+
+                <div class="result-title">
+                    뜻
+                </div>
+
+                <div
+                    id="resultMeaning"
+                    class="result-content"
+                ></div>
+
+            </div>
+
+
+            <div class="result-section">
+
+                <div class="result-title">
+                    동의어
+                </div>
+
+                <div
+                    id="resultSynonym"
+                    class="result-content"
+                ></div>
+
+            </div>
+
+
+            <div class="result-section">
+
+                <div class="result-title">
+                    반의어
+                </div>
+
+                <div
+                    id="resultAntonym"
+                    class="result-content"
+                ></div>
+
+            </div>
+
+
+            <div class="result-section">
+
+                <div class="result-title">
+                    예문
+                </div>
+
+                <div
+                    id="resultExample"
+                    class="result-content"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     WORDS
+========================= -->
+
+<section
+    id="words"
+    class="page"
+>
+
+    <div class="card">
+
+        <div class="top-row">
+
+            <h2>
+                내 단어장
+            </h2>
+
+            <input
+                class="search"
+                id="searchInput"
+                type="text"
+                placeholder="단어 검색"
+                oninput="renderWords()"
+            >
+
+        </div>
+
+
+        <div
+            id="wordList"
+            class="word-list"
+        ></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     QUIZ
+========================= -->
+
+<section
+    id="quiz"
+    class="page"
+>
+
+    <div class="quiz-score">
+
+        현재 점수:
+        <strong id="score">
+            0
+        </strong>
+
+    </div>
+
+
+    <div class="card quiz-card">
+
+        <div
+            id="quizType"
+            class="quiz-type"
+        >
+            랜덤 퀴즈
+        </div>
+
+
+        <div
+            id="question"
+            class="question"
+        >
+            단어를 추가해주세요
+        </div>
+
+
+        <div
+            id="answers"
+            class="answers"
+        ></div>
+
+
+        <div
+            id="quizResult"
+            class="quiz-result"
+        ></div>
+
+
+        <button
+            id="nextBtn"
+            class="next-btn"
+            onclick="nextQuiz()"
+        >
+            다음 문제 →
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     UNKNOWN
+========================= -->
+
+<section
+    id="unknown"
+    class="page"
+>
+
+    <div class="card">
+
+        <div class="top-row">
+
+            <h2>
+                ⭐ 모르는 단어
+            </h2>
+
+        </div>
+
+
+        <div
+            id="unknownList"
+            class="word-list"
+        ></div>
+
+    </div>
+
+</section>
+
+</div>
+
+
+
+<script>
+
+/* =========================================
+   저장된 단어 불러오기
+========================================= */
+
+let words =
+    JSON.parse(
+        localStorage.getItem("wordRemixWords")
+    ) || [];
+
+
+let score = 0;
+
+let currentQuiz = null;
+
+
+/* =========================================
+   저장
+========================================= */
+
+function saveWords() {
+
+    localStorage.setItem(
+        "wordRemixWords",
+        JSON.stringify(words)
+    );
+
+    updateStats();
+}
+
+
+/* =========================================
+   페이지 이동
+========================================= */
+
+function showPage(pageId, button) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+
+            page.classList.remove("active");
+
+        });
+
+
+    document
+        .getElementById(pageId)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav button")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    button.classList.add("active");
+
+
+    if (pageId === "words") {
+
+        renderWords();
+
+    }
+
+
+    if (pageId === "unknown") {
+
+        renderUnknown();
+
+    }
+
+
+    if (pageId === "quiz") {
+
+        nextQuiz();
+
+    }
+
+}
+
+
+/* =========================================
+   ENTER 키
+========================================= */
+
+function handleEnter(event) {
+
+    if (event.key === "Enter") {
+
+        searchAndAddWord();
+
+    }
+
+}
+
+
+/* =========================================
+   API 검색
+========================================= */
+
+async function searchAndAddWord() {
+
+    const input =
+        document.getElementById("wordInput");
+
+    const word =
+        input.value.trim().toLowerCase();
+
+
+    if (!word) {
+
+        alert("영단어를 입력해주세요!");
+
+        return;
+
+    }
+
+
+    /*
+     * 영어 단어만 검색
+     */
+
+    if (!/^[a-zA-Z][a-zA-Z'-]*$/.test(word)) {
+
+        alert("영어 단어를 입력해주세요!");
+
+        return;
+
+    }
+
+
+    /*
+     * 중복 검사
+     */
+
+    const exists =
+        words.some(
+            item =>
+                item.word.toLowerCase() === word
+        );
+
+
+    if (exists) {
+
+        alert("이미 단어장에 있는 단어예요!");
+
+        return;
+
+    }
+
+
+    setLoading(true);
+
+
+    try {
+
+        /*
+         * Free Dictionary API
+         *
+         * API KEY 필요 없음
+         */
+
+        const url =
+            "https://api.dictionaryapi.dev/api/v2/entries/en/"
+            + encodeURIComponent(word);
+
+
+        const response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "단어를 찾을 수 없습니다."
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        /*
+         * API 결과에서
+         * 첫 번째 사전 항목 사용
+         */
+
+        const entry =
+            data[0];
+
+
+        /*
+         * 뜻 모으기
+         */
+
+        const definitions = [];
+
+        const synonyms = [];
+
+        const antonyms = [];
+
+        const examples = [];
+
+
+        entry.meanings.forEach(meaning => {
+
+            meaning.definitions.forEach(def => {
+
+                if (
+                    def.definition &&
+                    !definitions.includes(
+                        def.definition
+                    )
+                ) {
+
+                    definitions.push(
+                        def.definition
+                    );
+
+                }
+
+
+                if (
+                    def.example &&
+                    !examples.includes(
+                        def.example
+                    )
+                ) {
+
+                    examples.push(
+                        def.example
+                    );
+
+                }
+
+
+                if (Array.isArray(def.synonyms)) {
+
+                    def.synonyms.forEach(word => {
+
+                        if (
+                            !synonyms.includes(word)
+                        ) {
+
+                            synonyms.push(word);
+
+                        }
+
+                    });
+
+                }
+
+
+                if (Array.isArray(def.antonyms)) {
+
+                    def.antonyms.forEach(word => {
+
+                        if (
+                            !antonyms.includes(word)
+                        ) {
+
+                            antonyms.push(word);
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+
+            /*
+             * meaning 레벨의
+             * synonyms / antonyms도 확인
+             */
+
+            if (Array.isArray(meaning.synonyms)) {
+
+                meaning.synonyms.forEach(word => {
+
+                    if (
+                        !synonyms.includes(word)
+                    ) {
+
+                        synonyms.push(word);
+
+                    }
+
+                });
+
+            }
+
+
+            if (Array.isArray(meaning.antonyms)) {
+
+                meaning.antonyms.forEach(word => {
+
+                    if (
+                        !antonyms.includes(word)
+                    ) {
+
+                        antonyms.push(word);
+
+                    }
+
+                });
+
+            }
+
+        });
+
+
+        /*
+         * 최대 개수 제한
+         */
+
+        const meaningText =
+            definitions
+                .slice(0, 3)
+                .join(" / ");
+
+
+        const synonymText =
+            synonyms
+                .slice(0, 8)
+                .join(", ");
+
+
+        const antonymText =
+            antonyms
+                .slice(0, 8)
+                .join(", ");
+
+
+        const exampleText =
+            examples
+                .slice(0, 2)
+                .join(" / ");
+
+
+        /*
+         * 발음 찾기
+         */
+
+        let phonetic =
+            entry.phonetic || "";
+
+
+        if (!phonetic && Array.isArray(entry.phonetics)) {
+
+            const phoneticItem =
+                entry.phonetics.find(
+                    item => item.text
+                );
+
+            if (phoneticItem) {
+
+                phonetic =
+                    phoneticItem.text;
+
+            }
+
+        }
+
+
+        /*
+         * 화면에 결과 표시
+         */
+
+        document.getElementById(
+            "meaningInput"
+        ).value =
+            meaningText || "정보 없음";
+
+
+        document.getElementById(
+            "synonymInput"
+        ).value =
+            synonymText || "정보 없음";
+
+
+        document.getElementById(
+            "antonymInput"
+        ).value =
+            antonymText || "정보 없음";
+
+
+        document.getElementById(
+            "resultWord"
+        ).textContent =
+            entry.word || word;
+
+
+        document.getElementById(
+            "resultPhonetic"
+        ).textContent =
+            phonetic
+                ? `/${phonetic}/`
+                : "발음 정보 없음";
+
+
+        document.getElementById(
+            "resultMeaning"
+        ).textContent =
+            meaningText || "정보 없음";
+
+
+        document.getElementById(
+            "resultSynonym"
+        ).textContent =
+            synonymText || "정보 없음";
+
+
+        document.getElementById(
+            "resultAntonym"
+        ).textContent =
+            antonymText || "정보 없음";
+
+
+        document.getElementById(
+            "resultExample"
+        ).textContent =
+            exampleText || "예문 정보 없음";
+
+
+        document.getElementById(
+            "apiResult"
+        ).classList.add("show");
+
+
+        /*
+         * 단어 저장
+         */
+
+        words.push({
+
+            id: Date.now(),
+
+            word:
+                entry.word || word,
+
+            meaning:
+                meaningText || "정보 없음",
+
+            synonym:
+                synonymText || "",
+
+            antonym:
+                antonymText || "",
+
+            example:
+                exampleText || "",
+
+            phonetic:
+                phonetic || "",
+
+            unknown:
+                false
+
+        });
+
+
+        saveWords();
+
+
+        /*
+         * 입력창 비우기
+         */
+
+        input.value = "";
+
+
+        /*
+         * 단어장으로 이동
+         */
+
+        setTimeout(() => {
+
+            renderWords();
+
+        }, 100);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "단어를 찾지 못했어요.\n\n"
+            + "철자를 확인하거나 잠시 후 다시 시도해주세요."
+        );
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+}
+
+
+/* =========================================
+   로딩 표시
+========================================= */
+
+function setLoading(isLoading) {
+
+    const loading =
+        document.getElementById("loading");
+
+    const button =
+        document.querySelector(".add-btn");
+
+
+    if (isLoading) {
+
+        loading.classList.add("show");
+
+        button.disabled = true;
+
+        button.textContent =
+            "🔎 검색 중...";
+
+    } else {
+
+        loading.classList.remove("show");
+
+        button.disabled = false;
+
+        button.textContent =
+            "🔍 단어 검색 & 추가";
+
+    }
+
+}
+
+
+/* =========================================
+   통계
+========================================= */
+
+function updateStats() {
+
+    const total =
+        words.length;
+
+
+    const unknown =
+        words.filter(
+            word => word.unknown
+        ).length;
+
+
+    const known =
+        total - unknown;
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "unknownCount"
+    ).textContent =
+        unknown;
+
+
+    document.getElementById(
+        "knownCount"
+    ).textContent =
+        known;
+
+}
+
+
+/* =========================================
+   단어장
+========================================= */
+
+function renderWords() {
+
+    const list =
+        document.getElementById(
+            "wordList"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )?.value
+        .toLowerCase()
+        || "";
+
+
+    const filtered =
+        words.filter(item =>
+
+            item.word
+                .toLowerCase()
+                .includes(search)
+
+            ||
+
+            item.meaning
+                .toLowerCase()
+                .includes(search)
+
+        );
+
+
+    if (filtered.length === 0) {
+
+        list.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">
+                    📖
+                </div>
+                아직 단어가 없어요.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        filtered.map(item => `
+
+        <div class="word-item">
+
+            <div class="word-main">
+
+                <div class="word">
+                    ${escapeHTML(item.word)}
+                </div>
+
+                <div class="meaning">
+                    ${escapeHTML(item.meaning)}
+                </div>
+
+                <div class="extra">
+
+                    동의어:
+                    ${escapeHTML(
+                        item.synonym || "정보 없음"
+                    )}
+
+                    &nbsp; · &nbsp;
+
+                    반의어:
+                    ${escapeHTML(
+                        item.antonym || "정보 없음"
+                    )}
+
+                </div>
+
+                ${
+                    item.example
+                    ? `
+                    <div class="example">
+                        "${escapeHTML(item.example)}"
+                    </div>
+                    `
+                    : ""
+                }
+
+            </div>
+
+
+            <div class="word-actions">
+
+                <button
+                    class="star-btn ${
+                        item.unknown
+                        ? ""
+                        : "off"
+                    }"
+                    onclick="toggleUnknown(${item.id})"
+                >
+                    ${item.unknown ? "⭐" : "☆"}
+                </button>
+
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteWord(${item.id})"
+                >
+                    삭제
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================
+   모르는 단어
+========================================= */
+
+function renderUnknown() {
+
+    const list =
+        document.getElementById(
+            "unknownList"
+        );
+
+
+    const unknownWords =
+        words.filter(
+            word => word.unknown
+        );
+
+
+    if (unknownWords.length === 0) {
+
+        list.innerHTML = `
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ✨
+                </div>
+
+                모르는 단어가 없어요!
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        unknownWords.map(item => `
+
+        <div class="word-item">
+
+            <div class="word-main">
+
+                <div class="word">
+                    ${escapeHTML(item.word)}
+                </div>
+
+                <div class="meaning">
+                    ${escapeHTML(item.meaning)}
+                </div>
+
+                <div class="extra">
+
+                    동의어:
+                    ${escapeHTML(
+                        item.synonym || "정보 없음"
+                    )}
+
+                    &nbsp; · &nbsp;
+
+                    반의어:
+                    ${escapeHTML(
+                        item.antonym || "정보 없음"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="word-actions">
+
+                <button
+                    class="star-btn"
+                    onclick="toggleUnknown(${item.id})"
+                >
+                    ⭐
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================
+   별표
+========================================= */
+
+function toggleUnknown(id) {
+
+    const item =
+        words.find(
+            word => word.id === id
+        );
+
+
+    if (!item) return;
+
+
+    item.unknown =
+        !item.unknown;
+
+
+    saveWords();
+
+    renderWords();
+
+    renderUnknown();
+
+}
+
+
+/* =========================================
+   삭제
+========================================= */
+
+function deleteWord(id) {
+
+    if (
+        !confirm(
+            "이 단어를 삭제할까요?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    words =
+        words.filter(
+            word => word.id !== id
+        );
+
+
+    saveWords();
+
+    renderWords();
+
+    renderUnknown();
+
+}
+
+
+/* =========================================
+   퀴즈
+========================================= */
+
+function nextQuiz() {
+
+    if (words.length < 4) {
+
+        document.getElementById(
+            "question"
+        ).textContent =
+            "퀴즈를 만들려면 최소 4개의 단어가 필요해요.";
+
+
+        document.getElementById(
+            "answers"
+        ).innerHTML = "";
+
+
+        document.getElementById(
+            "quizResult"
+        ).textContent =
+            "단어를 4개 이상 추가해주세요!";
+
+
+        document.getElementById(
+            "nextBtn"
+        ).style.display =
+            "none";
+
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "quizResult"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "nextBtn"
+    ).style.display =
+        "none";
+
+
+    const randomWord =
+        words[
+            Math.floor(
+                Math.random()
+                * words.length
+            )
+        ];
+
+
+    /*
+     * 영어 → 뜻
+     * 또는
+     * 뜻 → 영어
+     */
+
+    const isMeaningQuiz =
+        Math.random() < 0.5;
+
+
+    let choices =
+        shuffle(
+            words.filter(
+                word =>
+                    word.id !== randomWord.id
+            )
+        ).slice(0, 3);
+
+
+    choices.push(randomWord);
+
+    choices =
+        shuffle(choices);
+
+
+    currentQuiz = {
+
+        word: randomWord,
+
+        correct:
+            isMeaningQuiz
+            ? randomWord.meaning
+            : randomWord.word,
+
+        type:
+            isMeaningQuiz
+            ? "영어 → 뜻"
+            : "뜻 → 영어"
+
+    };
+
+
+    document.getElementById(
+        "quizType"
+    ).textContent =
+        currentQuiz.type;
+
+
+    document.getElementById(
+        "question"
+    ).textContent =
+        isMeaningQuiz
+        ? randomWord.word
+        : randomWord.meaning;
+
+
+    const answers =
+        document.getElementById(
+            "answers"
+        );
+
+
+    answers.innerHTML =
+        choices.map(choice => {
+
+            const value =
+                isMeaningQuiz
+                ? choice.meaning
+                : choice.word;
+
+
+            return `
+
+                <button
+                    class="answer"
+                    onclick="checkAnswer(this, '${escapeAttribute(value)}')"
+                >
+                    ${escapeHTML(value)}
+                </button>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================================
+   정답 확인
+========================================= */
+
+function checkAnswer(
+    button,
+    selected
+) {
+
+    if (!currentQuiz) return;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".answer"
+        );
+
+
+    buttons.forEach(btn => {
+
+        btn.disabled = true;
+
+    });
+
+
+    if (
+        selected ===
+        currentQuiz.correct
+    ) {
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        score++;
+
+
+        document.getElementById(
+            "score"
+        ).textContent =
+            score;
+
+
+        document.getElementById(
+            "quizResult"
+        ).textContent =
+            "정답이에요! 🎉";
+
+
+    } else {
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        document.getElementById(
+            "quizResult"
+        ).textContent =
+            `아쉬워요! 정답은 "${currentQuiz.correct}"`;
+
+
+        buttons.forEach(btn => {
+
+            if (
+                btn.textContent.trim()
+                ===
+                currentQuiz.correct
+            ) {
+
+                btn.classList.add(
+                    "correct"
+                );
+
+            }
+
+        });
+
+
+        /*
+         * 틀린 단어 자동 ⭐
+         */
+
+        currentQuiz.word.unknown =
+            true;
+
+
+        saveWords();
+
+    }
+
+
+    document.getElementById(
+        "nextBtn"
+    ).style.display =
+        "inline-block";
+
+}
+
+
+/* =========================================
+   배열 랜덤
+========================================= */
+
+function shuffle(array) {
+
+    const result =
+        [...array];
+
+
+    for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random()
+                * (i + 1)
+            );
+
+
+        [
+            result[i],
+            result[j]
+        ] =
+        [
+            result[j],
+            result[i]
+        ];
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================
+   HTML 안전 처리
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+function escapeAttribute(value) {
+
+    return String(value)
+
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+
+        .replace(
+            /'/g,
+            "\\'"
+        );
+
+}
+
+
+/* =========================================
+   시작
+========================================= */
+
+updateStats();
+
+renderWords();
+
+</script>
+
+</body>
+</html>
